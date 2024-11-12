@@ -76,38 +76,46 @@
         <form id="registerForm">
             <input type="text" id="username" placeholder="Usuario" required>
             <input type="password" id="password" placeholder="Contraseña" required>
+            <input type="password" id="confirmPass" placeholder="Confirmar" required>
             <button type="submit" class="register-btn">Crear Cuenta</button>
         </form>
     </div>
 
     <script>
         document.getElementById('registerForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+    event.preventDefault();
 
-            try {
-                const response = await fetch('http://127.0.0.1:3000/auth/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
-                });
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const confirmPass = document.getElementById('confirmPass').value;
 
-                const data = await response.json();
-                if (response.ok) {
-                    alert('Cuenta creada exitosamente');
-                    window.location.href = 'login.html'; // Redirige al login
-                } else {
-                    alert('Error al crear cuenta: ' + data.error);
-                }
-            } catch (error) {
-                console.error('Error de red:', error);
-                alert('Hubo un problema al crear la cuenta. Intenta de nuevo.');
-            }
+    if (password !== confirmPass) {
+        alert('Las contraseñas no coinciden. Por favor, verifica.');
+        return; // Detener la ejecución si las contraseñas no coinciden
+    }
+
+    try {
+        const response = await fetch('http://127.0.0.1:3000/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
         });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert('Cuenta creada exitosamente');
+            window.location.href = 'login.html'; // Redirige al login
+        } else {
+            alert('Error al crear cuenta: ' + data.error);
+        }
+    } catch (error) {
+        console.error('Error de red:', error);
+        alert('Hubo un problema al crear la cuenta. Intenta de nuevo.');
+    }
+});
+
     </script>
 
 </body>
