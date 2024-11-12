@@ -30,5 +30,16 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Ruta para obtener todos los usuarios
+router.get('/allusers', async (req, res) => {
+    try {
+        const users = await User.findAll();  // Obtiene todos los usuarios
+        res.status(200).json(users);         // Devuelve los usuarios en formato JSON
+    } catch (error) {
+        console.error('Error al obtener los usuarios:', error);
+        res.status(500).json({ error: 'Error al obtener los usuarios' });
+    }
+});
+
 // Exporta el router
 module.exports = router;
