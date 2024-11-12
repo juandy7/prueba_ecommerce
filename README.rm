@@ -1,0 +1,4 @@
+Lo primero que se hace es instalar las dependencias:
+npm install sequelize mysql2
+
+Tambien es necesario tener instalado mysql y tener el usuario y contraseña
