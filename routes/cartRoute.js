@@ -1,8 +1,24 @@
 // routes/cartRoutes.js
 const express = require('express');
+const CartItem = require('../models/CartItem');
 const router = express.Router();
-const { Cart, CartItem, Product } = require('../models');
 
+router.post('/add', async (req, res) => {
+    const { userId, productId, quantity } = req.body;
+
+    try {
+        const newCartItem = await CartItem.create({ userId, productId,quantity });
+        res.status(201).json({ message: 'Carrito creado', CartItem: newCartItem });
+    } catch (error) {
+        res.status(400).json({ error: 'Error al registrar carrito' });
+    }
+});
+
+router.get('/show', async (req,res) =>{
+    res.status(200).json({message: 'echo'})
+});
+
+/*
 // Ruta para agregar un producto al carrito
 router.post('/:userId/cart', async (req, res) => {
     const { userId } = req.params; // ID del usuario
@@ -37,5 +53,7 @@ router.post('/:userId/cart', async (req, res) => {
         return res.status(500).json({ message: 'Error al agregar el producto al carrito' });
     }
 });
+
+*/
 
 module.exports = router;

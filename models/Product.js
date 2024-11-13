@@ -11,12 +11,18 @@ Product.init({
 }, {
     sequelize,
     modelName: 'product',
-    tableName: 'products', // Asegura que Sequelize use la tabla "products"
+    tableName: 'products', 
 });
 
-// Asociación uno a muchos (Un producto puede estar en varios CartItems)
-Product.hasMany(CartItem, { foreignKey: 'productId' });
-CartItem.belongsTo(Product, { foreignKey: 'productId' });
+// Asociación: un producto tiene muchos CartItems
+Product.hasMany(CartItem, {
+    foreignKey: 'productId',
+    as: 'cartItems',
+  });
+  CartItem.belongsTo(Product, {
+    foreignKey: 'productId',
+    as: 'product',
+  });
 
 module.exports = Product;
 

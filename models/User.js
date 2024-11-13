@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Cart = require('./Cart'); // Importa el modelo Cart
+const CartItem = require('./CartItem'); // Importa el modelo Cart
 
 class User extends Model {}
 
@@ -9,9 +9,15 @@ User.init({
     password: DataTypes.STRING,
 }, { sequelize, modelName: 'user' });
 
-// Asociación uno a uno (Un usuario tiene un carrito)
-User.hasOne(Cart, { foreignKey: 'userId' });
-Cart.belongsTo(User, { foreignKey: 'userId' });
+// Asociación: un usuario tiene muchos CartItems
+User.hasMany(CartItem, {
+    foreignKey: 'userId',
+    as: 'cartItems',
+  });
+  CartItem.belongsTo(User, {
+    foreignKey: 'userId',
+    as: 'user',
+  });
 
 module.exports = User;
 

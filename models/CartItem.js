@@ -4,8 +4,14 @@ const sequelize = require('../config/database');
 class CartItem extends Model {}
 
 CartItem.init({
-    quantity: DataTypes.INTEGER,
-}, { sequelize, modelName: 'cartItem' });
+  quantity: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 1,
+  },
+}, {
+  sequelize,
+  modelName: 'cartItem',
+});
 
 module.exports = CartItem;
-
