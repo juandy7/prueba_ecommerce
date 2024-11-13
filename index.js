@@ -4,6 +4,7 @@ const sequelize = require('./config/database');
 const authRoutes = require('./routes/authRoutes'); // Rutas de autenticación
 const productRoutes = require('./routes/productRoutes'); // Rutas de productos
 const path = require('path'); // Para servir archivos estáticos si es necesario
+const cartRoutes = require('./routes/cartRoute');
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ app.set('views', path.join(__dirname, 'views'));
 // Usamos las rutas
 app.use('/auth', authRoutes); // Rutas de autenticación
 app.use('/products', productRoutes); // Rutas de productos
+app.use('/cart', cartRoutes);
 
 sequelize.sync()
     .then(() => console.log('Base de datos sincronizada'))
