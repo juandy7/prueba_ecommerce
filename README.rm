@@ -1,3 +1,9 @@
+Esta aplicacion es hecha para una empresa de ecommerce que quiere migrar a la nube con AWS, en este codigo
+en especifico se hace un CRUD de las  funcionalidades que puede tener una empresa de ecommerce. Se usa Nodejs
+y ORM para el manejo de la base de datos.
+
+
+
 *Antes de ejecutar el programa*
 
 Lo primero que se hace es instalar las dependencias:
