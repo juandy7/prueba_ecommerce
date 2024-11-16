@@ -1,4 +1,40 @@
+*Antes de ejecutar el programa*
+
 Lo primero que se hace es instalar las dependencias:
 npm install sequelize mysql2
 
-Tambien es necesario tener instalado mysql y tener el usuario y contraseña
+Tambien es necesario tener instalado mysql y tener el usuario y contraseña. Cuando uno instala mysql en el 
+ordenador puede crear una base de datos, en nuestro caso usamos los datos que estan en /config/database.js
+'ecommerceDB', 'admin', 'password'.
+
+Es necesario tener instalada la extension de visualStudio llamada LiveWebServer
+
+*Ejecucion del programa*
+
+Para ejecutar la app: poner en el terminal node index.js
+La aplicacion se lanza por el puerto 3000 por lo que no deberia estar en uso por alguna aplicacion
+
+Uso en POSTMAN:
+Para authRoutes: http://localhost:3000/auth/(nombre de la ruta en authRoutes)
+Para cartRoute: http://localhost:3000/auth/(nombre de la ruta en cartRoute)
+Para productRoutes: http://localhost:3000/auth/(nombre de la ruta en productRoutes)
+
+*Explicacion del codigo*
+
+Carpetas:
+
+config-> Contiene database.js. Este archivo js sirve justamente para conectar localmente la base de datos
+
+models-> Contiene los objetos User,Product,CartItem. Estos archivos js justamente son para la construccion de Estos
+cuando se ejecute la aplicacion. La base de datos es relacional
+
+routes-> Basicamente son las rutas del CRUD en el backend:
+authRoutes: Son las rutas para el login y registro de usuarios
+cartRouthe: Son las rutas relacionadas con el carrito de compras
+productRoutes: Son las rutas para mostrar los productos disponibles
+
+Views-> Contiene los HTML necesarios para mostrar la informacion que queremos traer del backend
+
+index.js-> Es el archivo principal de donde se ejecutan las rutas
+
+package.json y package-lock.json -> Contiene las dependencias necesarias 

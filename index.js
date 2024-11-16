@@ -15,9 +15,9 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Usamos las rutas
-app.use('/auth', authRoutes); // Rutas de autenticación
-app.use('/products', productRoutes); // Rutas de productos
-app.use('/cart', cartRoutes);
+app.use('/auth', authRoutes); // Rutas de autenticación que se conecta con authRoutes
+app.use('/products', productRoutes); // Rutas de productos que se conecta con productRoutes
+app.use('/cart', cartRoutes); // Rutas de productos que se conecta con productRoutes
 
 sequelize.sync()
     .then(() => console.log('Base de datos sincronizada'))
