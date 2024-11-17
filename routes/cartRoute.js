@@ -1,59 +1,67 @@
-// routes/cartRoutes.js
 const express = require('express');
-const CartItem = require('../models/CartItem');
+const CartItem = require('../models/CartItem'); // Modelo de carrito
 const router = express.Router();
 
+// Ruta para agregar un ítem al carrito
 router.post('/add', async (req, res) => {
     const { userId, productId, quantity } = req.body;
 
     try {
-        const newCartItem = await CartItem.create({ userId, productId,quantity });
-        res.status(201).json({ message: 'Carrito creado', CartItem: newCartItem });
+        const newCartItem = await CartItem.create({ userId, productId, quantity });
+        res.status(201).json({ message: 'Carrito creado', cartItem: newCartItem });
     } catch (error) {
-        res.status(400).json({ error: 'Error al registrar carrito' });
+        res.status(400).json({ error: 'Error al registrar carrito', details: error.message });
     }
 });
 
-router.get('/show', async (req,res) =>{
-    res.status(200).json({message: 'echo'})
-});
-
-/*
-// Ruta para agregar un producto al carrito
-router.post('/:userId/cart', async (req, res) => {
-    const { userId } = req.params; // ID del usuario
-    const { productId, quantity } = req.body; // Detalles del producto y cantidad
+// Ruta para mostrar los ítems del carrito de un usuario específico
+router.get('/show/:userId', async (req, res) => {
+    const { userId } = req.params;
 
     try {
-        // Verificar que el usuario exista
-        const user = await User.findByPk(userId);
-        if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
-
-        // Verificar que el producto exista
-        const product = await Product.findByPk(productId);
-        if (!product) return res.status(404).json({ message: 'Producto no encontrado' });
-
-        // Verificar si el usuario ya tiene un carrito
-        let cart = await Cart.findOne({ where: { userId } });
-        if (!cart) {
-            // Si no tiene carrito, crear uno
-            cart = await Cart.create({ userId });
+        const cartItems = await CartItem.findAll({ where: { userId } });
+        if (cartItems.length === 0) {
+            return res.status(404).json({ message: 'El carrito está vacío' });
         }
-
-        // Crear un item en el carrito
-        const cartItem = await CartItem.create({
-            cartId: cart.id,
-            productId,
-            quantity,
-        });
-
-        return res.status(201).json(cartItem);
+        res.status(200).json({ cartItems });
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Error al agregar el producto al carrito' });
+        res.status(500).json({ error: 'Error al consultar el carrito', details: error.message });
     }
 });
 
-*/
+// Ruta para eliminar un ítem del carrito
+router.delete('/delete/:cartItemId', async (req, res) => {
+    const { cartItemId } = req.params;
+
+    try {
+        const deletedItem = await CartItem.destroy({ where: { id: cartItemId } });
+
+        if (deletedItem) {
+            res.status(200).json({ message: 'Producto eliminado del carrito' });
+        } else {
+            res.status(404).json({ error: 'Producto no encontrado' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar producto', details: error.message });
+    }
+});
+
+// Ruta para vaciar el carrito (eliminar todos los productos del carrito de un usuario)
+router.delete('/clear/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        // Eliminar todos los productos del carrito para el usuario específico
+        const deletedItems = await CartItem.destroy({ where: { userId } });
+
+        if (deletedItems > 0) {
+            res.status(200).json({ message: 'Carrito vacío exitosamente' });
+        } else {
+            res.status(404).json({ message: 'El carrito ya está vacío o no existe' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al vaciar el carrito', details: error.message });
+    }
+});
 
 module.exports = router;
