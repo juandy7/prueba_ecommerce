@@ -15,7 +15,7 @@ ordenador puede crear una base de datos, en nuestro caso usamos los datos que es
 
 Es necesario tener instalada la extension de visualStudio llamada LiveWebServer
 
-*Ejecucion del programa*
+*Ejecucion del programa localmente*
 
 Para ejecutar la app: poner en el terminal node index.js
 La aplicacion se lanza por el puerto 3000 por lo que no deberia estar en uso por alguna aplicacion
