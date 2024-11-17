@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Plantilla para desplegar una aplicación de comercio electrónico en AWS.
+
+Parameters:
+  InstanceType:
+    Type: String
+    Default: t2.micro
+    Description: Tipo de instancia EC2.
+    AllowedValues:
+      - t2.micro
+      - t2.small
+      - t2.medium
+    ConstraintDescription: "Debes elegir un tipo de instancia válido."
+
+  DBInstanceClass:
+    Type: String
+    Default: db.t2.micro
+    Description: Tipo de instancia para la base de datos RDS.
+    AllowedValues:
+      - db.t2.micro
+      - db.t3.micro
+      - db.m5.large
+    ConstraintDescription: "Debes elegir un tipo de instancia válido para RDS."
+
+Resources:
+  # Creación de la base de datos RDS (MySQL)
+  MyRDSDatabase:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      DBInstanceIdentifier: ecommerce-db
+      DBInstanceClass: !Ref DBInstanceClass
+      Engine: MySQL
+      EngineVersion: "8.0"
+      MasterUsername: admin
+      MasterUserPassword: "password"  # Cambia esta contraseña por una más segura
+      DBName: ecommerceDB
+      AllocatedStorage: '20'
+      BackupRetentionPeriod: '7'
+      VPCSecurityGroups: 
+        - !Ref DBSecurityGroup
+
+  # Creación de un grupo de seguridad para la base de datos
+  DBSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: "Grupo de seguridad para la base de datos RDS"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '3306'
+          ToPort: '3306'
+          CidrIp: "0.0.0.0/0"  # Considera restringir esto para mayor seguridad
+
+  # Creación de la instancia EC2
+  MyEC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: ami-0c55b159cbfafe1f0  # Cambia este ID por el de tu región (Amazon Linux 2)
+      KeyName: "MyKeyPair"  # Asegúrate de tener un par de claves SSH disponible
+      SecurityGroupIds:
+        - !Ref EC2SecurityGroup
+      SubnetId: "subnet-12345678"  # Reemplaza con tu SubnetId
+      Tags:
+        - Key: Name
+          Value: "EcommerceEC2"
+
+  # Grupo de seguridad para la instancia EC2
+  EC2SecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: "Grupo de seguridad para la instancia EC2"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: "0.0.0.0/0"  # Acceso SSH, restringe por IP para mayor seguridad
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: "0.0.0.0/0"  # Acceso HTTP (puerto 80)
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp: "0.0.0.0/0"  # Acceso HTTPS (puerto 443)
+
+Outputs:
+  EC2PublicIP:
+    Description: "IP pública de la instancia EC2"
+    Value: !GetAtt MyEC2Instance.PublicIp
+  DBEndpoint:
+    Description: "Endpoint de la base de datos RDS"
+    Value: !GetAtt MyRDSDatabase.Endpoint.Address
