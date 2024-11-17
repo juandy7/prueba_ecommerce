@@ -85,8 +85,13 @@
                 });
 
                 if (response.ok) {
-                    // Redirige a otra página después de un inicio de sesión exitoso
-                    window.location.href = 'products.html'; // Cambia 'dashboard.html' por el archivo al que quieras redirigir
+                    const data = await response.json(); 
+
+                    // Guardar el ID del usuario en el localStorage
+                    localStorage.setItem('userId', users.id); 
+                
+                    // Redirige a la página de productos
+                    window.location.href = 'products.html'; 
                 } else {
                     alert("Error de autenticación. Por favor, verifica tus credenciales.");
                 }
