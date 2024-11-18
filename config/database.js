@@ -8,3 +8,4 @@ const sequelize = new Sequelize('ecommerceDB', 'admin', 'password', {
 
 module.exports = sequelize;
 
+
