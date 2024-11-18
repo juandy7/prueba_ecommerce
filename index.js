@@ -15,11 +15,11 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Servir archivos estáticos (si tienes un directorio "public" con HTML, CSS, JS)
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'views')));
 
 // Ruta raíz para servir el archivo HTML (si tienes un index.html)
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Asegúrate de tener el archivo 'index.html' en la carpeta 'public'
+    res.sendFile(path.join(__dirname, 'views', 'login.html')); // Asegúrate de tener el archivo 'index.html' en la carpeta 'public'
 });
 
 // Usamos las rutas
