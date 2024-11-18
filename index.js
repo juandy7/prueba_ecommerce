@@ -20,6 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Ruta raíz para servir login.html
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html')); // Sirve el archivo login.html
+
 });
 
 // Usamos las rutas
@@ -36,3 +37,4 @@ sequelize.sync()
 app.listen(3000, () => {
     console.log('Servidor en ejecución en el puerto 3000');
 });
+
