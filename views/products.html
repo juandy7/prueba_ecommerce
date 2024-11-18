@@ -79,7 +79,7 @@
             };
 
             try {
-                const response = await fetch('http://44.223.9.47:3000/cart/add', {
+                const response = await fetch('http://44.222.246.52:3000/cart/add', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -100,7 +100,7 @@
         }
 
         // Solicitud para obtener productos
-        fetch('http://44.223.9.47:3000/products/products')
+        fetch('http://44.222.246.52:3000/products/products')
             .then(response => response.json())
             .then(data => {
                 const container = document.getElementById('productContainer');
