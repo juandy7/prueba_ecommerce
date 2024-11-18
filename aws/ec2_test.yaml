@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Crear una instancia EC2 en la subred pública para probar la conectividad."
+
+Resources:
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Permitir tráfico SSH, HTTP y HTTPS"
+      VpcId: vpc-0dec38e7b804e2b79
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 181.54.0.220/32 
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: PublicInstanceSG
+
+  PublicEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      KeyName: vockey 
+      SecurityGroupIds:
+        - !Ref InstanceSecurityGroup
+      SubnetId: subnet-0c93a0c238cc638d9 
+      ImageId: ami-0c02fb55956c7d316 
+      Tags:
+        - Key: Name
+          Value: PublicEC2Instance
+
+Outputs:
+  InstanceId:
+    Description: "ID de la instancia EC2"
+    Value: !Ref PublicEC2Instance
+
+  InstancePublicIP:
+    Description: "Dirección IP pública de la instancia"
+    Value: !GetAtt PublicEC2Instance.PublicIp
