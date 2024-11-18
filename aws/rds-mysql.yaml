@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Plantilla para crear una instancia RDS MySQL con soporte multi-AZ"
+
+Parameters:
+  VPCID:
+    Type: String
+    Description: "ID de la VPC existente"
+  PrivateSubnetID1:
+    Type: String
+    Description: "ID de la primera subred privada"
+  PrivateSubnetID2:
+    Type: String
+    Description: "ID de la segunda subred privada en otra AZ"
+  SecurityGroupID:
+    Type: String
+    Description: "ID del grupo de seguridad para la instancia RDS"
+
+Resources:
+  MyRDSSubnetGroup:
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties:
+      DBSubnetGroupDescription: "Subredes privadas para la instancia RDS"
+      SubnetIds:
+        - !Ref PrivateSubnetID1
+        - !Ref PrivateSubnetID2
+
+  MyRDSInstance:
+    Type: "AWS::RDS::DBInstance"
+    Properties:
+      DBInstanceClass: "db.t3.micro"  
+      AllocatedStorage: 20          
+      Engine: "mysql"               
+      EngineVersion: "8.0"          
+      MasterUsername: "admin"        
+      MasterUserPassword: "password" 
+      DBName: "ecommerceDB"      
+      PubliclyAccessible: false      
+      VPCSecurityGroups:
+        - !Ref SecurityGroupID
+      DBSubnetGroupName: !Ref MyRDSSubnetGroup
+      StorageType: "gp2"
+      BackupRetentionPeriod: 7      
+
+Outputs:
+  RDSInstanceEndpoint:
+    Description: "Endpoint de la instancia RDS"
+    Value: !GetAtt MyRDSInstance.Endpoint.Address
