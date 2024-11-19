@@ -62,15 +62,10 @@
     </div>
 
     <script>
-        const userId = localStorage.getItem('userId');
-        console.log(userId);
 
         // Función para agregar productos al carrito en el servidor
         async function agregarAlCarrito(productId) {
-            if (!userId) {
-                alert("Por favor, inicia sesión para agregar productos al carrito.");
-                return;
-            }
+         
 
             const cartData = {
                 userId: 1,
