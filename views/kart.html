@@ -99,7 +99,7 @@
         // Función para cargar productos del carrito
         async function cargarCarrito() {
             try {
-                const response = await fetch('http://localhost:3000/cart/show/1');
+                const response = await fetch('http://44.222.246.52:3000/cart/show/1');
                 const data = await response.json();
     
                 if (response.status === 404) {
@@ -156,7 +156,7 @@
         // Función para eliminar un producto del carrito
         async function eliminarProducto(cartItemId) {
             try {
-                const response = await fetch('http://localhost:3000/cart/delete/' + cartItemId, {
+                const response = await fetch('http://44.222.246.52:3000/cart/delete/' + cartItemId, {
                     method: "DELETE",
                 });
     
@@ -175,7 +175,7 @@
         // Función para realizar la compra
         async function realizarCompra() {
             try {
-                const response = await fetch('http://localhost:3000/cart/clear/1', {
+                const response = await fetch('http://44.222.246.52:3000/cart/clear/1', {
                     method: 'DELETE'
                 });
 
