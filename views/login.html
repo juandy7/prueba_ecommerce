@@ -70,5 +70,25 @@
             <input type="text" name="username" placeholder="Usuario" required>
             <input type="password" name="password" placeholder="Contraseña" required>
             <button type="submit" class="login-btn">Iniciar Sesión</button>
-            <button type="button" class="register-btn" onclick="window.location.href='registro.html'
+            <button type="button" class="register-btn" onclick="window.location.href='registro.html'">Registrarse</button>
+        </form>
+    </div>
+
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault();
+            const username = event.target.username.value;
+            const password = event.target.password.value;
+            
+            // Aquí deberías implementar la lógica para verificar las credenciales con el servidor
+            if (username === 'admin' && password === 'admin') {
+                window.location.href = 'productos.html'; 
+            } else {
+                alert('Usuario o contraseña incorrectos');
+            }
+        }
+    </script>
+</body>
+</html>
+
 
